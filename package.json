@@ -1,0 +1,19 @@
+{
+  "name": "season2_security_react_test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JHKkmu/Season2_Security_React_TEST.git"
+  },
+  "author": "JHKkmu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JHKkmu/Season2_Security_React_TEST/issues"
+  },
+  "homepage": "https://github.com/JHKkmu/Season2_Security_React_TEST#readme"
+}
