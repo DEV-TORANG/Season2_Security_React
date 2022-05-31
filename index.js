@@ -5,7 +5,8 @@ const bodyParser = require('body-parser')        // 클라 - 서버를 위한 �
 const mongoose = require('mongoose')             // MongoDB 연결
 const {User} = require('./models/User')          // DB에 저장할 값 모델에서 불러오기
 const cookieParser = require('cookie-parser')    // 쿠키 저장을 위한 쿠키파서
-app.use(cookieParser());
+app.use(cookieParser());												 // 쿠키 파서 사용
+const {auth} = require("./middleware/auth")			 // 미들웨어에 저장해둔 auth로 라우트 실행.
 
 // 바디파서가 클라 정보를 서버에서 사용 가능하도록 하기 위한 구문
 app.use(bodyParser.urlencoded({extended: true}));
@@ -40,6 +41,7 @@ app.post('/register', (req, res) => {
 	})
 })
 
+// Login을 위한 라우트
 app.post('/login',(req,res) => {
 	// 요청된 이메일을 데이터베이스에 있는지 찾기
 	User.findOne({email: req.body.email}, (err, user) => {
@@ -69,6 +71,34 @@ app.post('/login',(req,res) => {
 					})
 			})
 	})
+})
+
+// 쿠키에 저장된 토큰을 통한 인증을 위한 라우트.
+app.get('/api/users/auth', auth, (req, res) => { 
+	// 미들웨어 (엔드포인트에 req받기 전에 중간에서 별도로 해주는 것)
+  // 여기까지 왔다는 얘기는 Authentication이 true라는 말
+  res.status(200).json({
+    _id: req.user._id,
+    isAdmin: req.user.role === 0 ? false : true, // 0이면 일반유저
+    isAuth: true,
+    email: req.user.email,
+    name: req.user.name,
+    lastname: req.user.lastname,
+    role: req.user.role,
+    image:req.user.image
+  })
+})
+
+// 임시로 구현해둔 로그아웃 기능
+app.get('/api/users/logout', auth, (req, res) => {
+  User.findOneAndUpdate({ _id: req.user._id},
+    { token: ""},
+    (err, user) => {
+      if(err) return res.json({success: false, err});
+      return res.status(200).send({
+        success: true
+      })
+    })
 })
 
 // 3000번에서 앱 실행

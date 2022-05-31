@@ -63,7 +63,6 @@ userSchema.methods.comparePassword = function(plainPassword, cb) {
 // 토큰 생성 후, 쿠키에 저장하기 위한 작업
 userSchema.methods.generateToken = function(cb) {
   var user = this;
-  
   //jsonwebtoken이용해서 token생성
   var token = jwt.sign(user._id.toHexString(), 'secretToken') 
   //user._id + 'secretToken' = token
@@ -74,6 +73,34 @@ userSchema.methods.generateToken = function(cb) {
     if(err) return cb(err)
     cb(null, user)
   })
+}
+
+// 쿠키에 저장된 토큰을 토대로 인증하는 작업
+userSchema.statics.findByToken = function(token, cb) {
+  var user = this;
+  //토큰을 decode
+  jwt.verify(token, 'secretToken', function(err, decoded) {
+    //유저 아이디를 이용해서 유저를 찾은 다음에
+    //클라이언트에서 가져온 token과 DB에 보관된 토큰이 일치하는지 확인
+    user.findOne({"_id": decoded, "token": token}, function (err, user) {
+      if (err) return cb(err);
+      cb(null, user)
+    })
+  })    
+}
+
+// 로그아웃을 위한 작업, 이후 Access 및 Refresh 토큰 설정 필요.
+userSchema.statics.findByToken = function(token, cb) {
+  var user = this;
+  //토큰을 decode
+  jwt.verify(token, 'secretToken', function(err, decoded) {
+    //유저 아이디를 이용해서 유저를 찾은 다음에
+    //클라이언트에서 가져온 token과 DB에 보관된 토큰이 일치하는지 확인
+    user.findOne({"_id": decoded, "token": token}, function (err, user) {
+      if (err) return cb(err);
+      cb(null, user)
+    })
+  })    
 }
 
 const User = mongoose.model('User', userSchema)  // 모델로 감싸주고
