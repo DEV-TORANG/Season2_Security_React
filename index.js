@@ -10,11 +10,14 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 // 보안을 위한 .env 파일 읽기 위한 구문
-require('dotenv').config();                 // .env 파일 사용을 위함
+// require('dotenv').config();                 // .env 파일 사용을 위함, 없으면 만들기.
+
+// HEROKU 사이트를 대비한 방식, 둘 중 아무거나 써도 상관없음.
+const config = require('./config/key')
 
 // DB 연결 구문
 mongoose
-.connect(process.env.mongoURI)
+.connect(config.mongoURI)
 .then(() => console.log(" == MongoDB Connected == "))
 .catch((err) => console.log(err))
 
