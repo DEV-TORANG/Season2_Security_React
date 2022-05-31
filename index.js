@@ -4,7 +4,7 @@ const app = express()
 const port = 5000
 
 mongoose
-.connect('mongodb+srv://ohbase:summer2524@oberspace-db-server.rylta.mongodb.net/?retryWrites=true&w=majority')
+.connect('')
 .then(() => console.log("=== MongoDB Connected ==="))
 .catch((err) => console.log(err));
 
