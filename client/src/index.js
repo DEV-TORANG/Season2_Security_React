@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -12,7 +12,6 @@ import ReduxTunk from "redux-thunk";
 import Reducer from "./_reducers/index";
 
 const rootNode = document.getElementById('root');
-
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware, ReduxTunk)(createStore)
 
 ReactDOM.createRoot(rootNode).render(
