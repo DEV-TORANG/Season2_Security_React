@@ -6,7 +6,7 @@ import {
   Link
 } from "react-router-dom";
 import LandingPage from './components/views/LandingPage/LandingPage';
-import LoginPage from './components/views/LoginPage/LoginPage';
+import Login from './components/views/Login/Login';
 import SignUp from './components/views/SignUp/SignUp';
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
       <div>
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/sign_up" element={<SignUp />} />
         </Routes>
       </div>

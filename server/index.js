@@ -22,7 +22,7 @@ mongoose.connect(config.mongoURI)
 .catch(err => console.log(err))
 
 // 회원가입을 위한 라우팅
-app.post('/api/users/sign_up', (req, res) => {
+app.post('/api/users/register', (req, res) => {
     // 회원가입 할 때 필요한 정보들 client에서 가져오면 
     //해당 데이터를 데이터베이스에 넣어준다.
     const user = new User(req.body) // req.body안에는 정보 들어있음(id, pw) *bodyparser 가져왔기 때문에 가능
