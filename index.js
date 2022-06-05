@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser')
 const {User} = require("./models/User")
 const config = require('./config/key')
 const app = express()                    // express 앱 만들기
-const port = 3000                        // 포트 번호 (아무거나)
+const port = 5000                        // 포트 번호 (아무거나)
 
 app.use(cookieParser());
 
@@ -95,4 +95,9 @@ app.get('/', (req, res) => {             // 루트 디렉토리 오면 hello~ �
 
 app.listen(port, () => {                 // 3000번에서 앱 실행
   console.log(`Example app listening on port ${port}`)
+})
+
+// LandingPage에서 보내준 /api/hello를 받았다면, "안녕하세요"를 응답.
+app.get('/api/hello', (req, res) => {
+  res.send("안녕하세요")
 })
