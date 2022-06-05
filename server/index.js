@@ -23,13 +23,17 @@ mongoose.connect(config.mongoURI)
 
 // 회원가입을 위한 라우팅
 app.post('/api/users/register', (req, res) => {
-    // 회원가입 할 때 필요한 정보들 client에서 가져오면 
-    //해당 데이터를 데이터베이스에 넣어준다.
-    const user = new User(req.body) // req.body안에는 정보 들어있음(id, pw) *bodyparser 가져왔기 때문에 가능
-    user.save((err,userInfo) => { // mongoDB 메소드, save해주면 Usermodel에 저장됨
-        if(err) return res.json({success:false, err})
-        return res.status(200).json ({sucess: true }) //status200은 성공했음을 의미
-    })
+  // 회원가입 할 때 필요한 정보들 client에서 가져오면 
+  //해당 데이터를 데이터베이스에 넣어준다.
+  const user = new User(req.body) // req.body안에는 정보 들어있음(id, pw) *bodyparser 가져왔기 때문에 가능
+  user.save((err,userInfo) => { // mongoDB 메소드, save해주면 Usermodel에 저장됨
+      if(err){
+        console.log("에러 발생")
+        return res.json({registerSuccess:false, err})
+      }
+      console.log("에러 없음, 성공 확인됨")
+      return res.status(200).json ({registerSuccess: true }) //status200은 성공했음을 의미
+  })
 })
 
 // 로그인을 위한 라우팅
@@ -92,8 +96,8 @@ app.get('/', (req, res) => {             // 루트 디렉토리 오면 hello~ �
   res.send('Hello World!')
 })
 
-app.listen(port, () => {                 // 3000번에서 앱 실행
-  console.log(`Example app listening on port ${port}`)
+app.listen(port, () => {                 // 5000번에서 서버 실행
+  console.log(`Server is listening on port ${port}`)
 })
 
 // LandingPage에서 보내준 /api/hello를 받았다면, "안녕하세요"를 응답.

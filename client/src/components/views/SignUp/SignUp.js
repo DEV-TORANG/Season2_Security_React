@@ -53,15 +53,14 @@ function SignUp(){
 		let body ={
 			userid: userid,
 			password: password,
-			email: usermail,
-			name: username,
+			usermail: usermail,
 			username: username
 		};
 
 		// Action Dispatch 구문
 		dispatch(registerUser(body)).then((response) =>{
-			if(response.payload.success){
-				props.history.push('/');
+			if(response.payload.registerSuccess){
+				console.log('회원가입에 성공했습니다.');
 			}
 			else{
 				console.log('회원가입에 실패했습니다.');
@@ -79,7 +78,7 @@ function SignUp(){
         <div className = "text">
          <br/>
          <div style={{color : '#898989', fontSize : '15px'}}> 회원 정보 입력</div>
-          
+
         </div>
         <br/>
 
@@ -95,7 +94,7 @@ function SignUp(){
           <div className="small-box">
              <HiOutlineKey size = "40" color = "#898989" />
           </div> 
-          <input name="password" type="text" placeholder="비밀번호" value={password} onChange={onUserpasswordHandler } className="input-box" size = "20" />
+          <input name="password" type="password" placeholder="비밀번호" value={password} onChange={onUserpasswordHandler } className="input-box" size = "20" />
         </div>
         <br/>
 
@@ -103,7 +102,7 @@ function SignUp(){
           <div className="small-box">
              <HiLockClosed size = "40" color = "#898989"/>
          </div>   
-         <input name="passwordcheck" type="text" placeholder="비밀번호 확인" value={passwordcheck} onChange={onUserpasswordcheckHandler} className="input-box" size = "20" />
+         <input name="passwordcheck" type="password" placeholder="비밀번호 확인" value={passwordcheck} onChange={onUserpasswordcheckHandler} className="input-box" size = "20" />
         </div>
         <br/>
 
@@ -119,7 +118,7 @@ function SignUp(){
           <div className="small-box">
              <HiMail size = "40" color = "#898989" />
           </div>
-          <input name="usermail" type="text" placeholder="이메일" value={usermail} onChange={onUsermailHandler} className="input-box" size = "20" />
+          <input name="usermail" type="email" placeholder="이메일" value={usermail} onChange={onUsermailHandler} className="input-box" size = "20" />
         </div>
         <br/>
 				
