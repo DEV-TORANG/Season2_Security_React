@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const {User} = require("./models/User")
 const config = require('./config/key')
+const {auth} = require("./middleware/auth")
 const app = express()                    // express 앱 만들기
 const port = 5000                        // 포트 번호 (아무거나)
 
@@ -21,7 +22,7 @@ mongoose.connect(config.mongoURI)
 .catch(err => console.log(err))
 
 // 회원가입을 위한 라우팅
-app.post('/register', (req, res) => {
+app.post('/api/users/sign_up', (req, res) => {
     // 회원가입 할 때 필요한 정보들 client에서 가져오면 
     //해당 데이터를 데이터베이스에 넣어준다.
     const user = new User(req.body) // req.body안에는 정보 들어있음(id, pw) *bodyparser 가져왔기 때문에 가능
@@ -61,7 +62,6 @@ app.post('/login',(req,res) => {
   })
 
 // 인증 라우팅
-const {auth} = require("./middleware/auth")
 app.get('/api/users/auth', auth, (req, res) => {  // 미들웨어 (엔드포인트에 req받기 전에 중간에서 별도로 해주는 것)
   // 여기까지 왔다는 얘기는 Authentication이 true라는 말
   res.status(200).json({
@@ -69,10 +69,9 @@ app.get('/api/users/auth', auth, (req, res) => {  // 미들웨어 (엔드포인�
     isAdmin: req.user.role === 0 ? false : true, // 0이면 일반유저
     isAuth: true,
     email: req.user.email,
-    name: req.user.name,
-    lastname: req.user.lastname,
-    role: req.user.role,
-    image:req.user.image
+    nameid: req.user.nameid,
+    username: req.user.username,
+    role: req.user.role
   })
 })
 

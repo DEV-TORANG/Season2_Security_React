@@ -4,7 +4,7 @@ const saltRounds = 10;
 const jwt = require('jsonwebtoken');
 
 const userSchema = mongoose.Schema( {    // 스키마 세팅
-  name:  {
+  userid:  {
     type: String,  
     maxlength: 50
   },
@@ -17,15 +17,18 @@ const userSchema = mongoose.Schema( {    // 스키마 세팅
     type: String,
     minlength: 5
   },
-  lastname: {
+  passwordcheck: {
     type: String,
+    minlength: 5
+  },
+  username:  {
+    type: String,  
     maxlength: 50
   },
   role: {                      //가입자(디폴트, 0), 관리자
     type: Number, 
     default: 0
   },
-  image: String,
   token: {                     // 토큰 설정 (나중에 유효성 관리 가능)
     type: String
   },
