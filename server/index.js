@@ -1,20 +1,20 @@
-const express = require('express')       // express 모듈 가져옴
-const mongoose = require('mongoose')
-const bodyParser = require('body-parser')
-const cookieParser = require('cookie-parser')
-const {User} = require("./models/User")
-const config = require('./config/key')
-const {auth} = require("./middleware/auth")
-const app = express()                    // express 앱 만들기
-const port = 5000                        // 포트 번호 (아무거나)
+const express = require('express')            // express 모듈 가져옴
+const mongoose = require('mongoose')          // mongoDB 연결
+const bodyParser = require('body-parser')     // 클라 - 서버 통신
+const cookieParser = require('cookie-parser') // 쿠키 저장
+const { User } = require("./models/User")     // User 스키마
+const config = require('./config/key')        // mongoURI 보안
+const { auth } = require("./middleware/auth") // 로그인 인증
+const app = express()                         // express 앱 만들기
+const port = 5000                             // 포트 번호 (아무거나)
 
 app.use(cookieParser());
 
 // body-parser가 클라이언트에서 오는 정보를 서버에서 분석해서 가져올 수 있게 하는 것
-// application/x-www-form-urlencoded 이렇게 된 데이터를 분석해서 가져올 수 있게 해주는 것
-app.use(bodyParser.urlencoded({extended: true})); 
-//application/json으로 된 데이터를 가져올 수 있게 하는 기능
-app.use(bodyParser.json());
+// application/x-www-form-urlencoded 타입 데이터
+// application/json 타입 데이터
+app.use(express.urlencoded({extended: true})); 
+app.use(express.json());
 
 // DB 연결 및 확인
 mongoose.connect(config.mongoURI)
@@ -24,20 +24,24 @@ mongoose.connect(config.mongoURI)
 // 회원가입을 위한 라우팅
 app.post('/api/users/register', (req, res) => {
   // 회원가입 할 때 필요한 정보들 client에서 가져오면 
-  //해당 데이터를 데이터베이스에 넣어준다.
-  const user = new User(req.body) // req.body안에는 정보 들어있음(id, pw) *bodyparser 가져왔기 때문에 가능
-  user.save((err,userInfo) => { // mongoDB 메소드, save해주면 Usermodel에 저장됨
+  // 해당 데이터를 데이터베이스에 넣어준다.
+  // req.body안에는 json 형식으로 정보들이 들어있음(id, pw) (body-parser)
+  const user = new User(req.body)
+
+  // mongoDB 메소드, save해주면 Usermodel에 저장됨 
+  user.save((err,userInfo) => { 
       if(err){
-        console.log("에러 발생")
+        console.log("회원가입 저장 에러 발생")
         return res.json({registerSuccess:false, err})
       }
       console.log("에러 없음, 성공 확인됨")
-      return res.status(200).json ({registerSuccess: true }) //status200은 성공했음을 의미
+      //status(200)은 성공을 의미
+      return res.status(200).json ({registerSuccess: true }) 
   })
 })
 
 // 로그인을 위한 라우팅
-app.post('/login',(req,res) => {
+app.post('/api/users/login',(req,res) => {
     // 요청된 이메일을 데이터베이스에 있는지 찾기
     User.findOne({email: req.body.email}, (err, user) => {
       if(!user) {

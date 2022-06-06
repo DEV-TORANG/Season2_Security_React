@@ -9,6 +9,7 @@ import { HiOutlineStar } from "react-icons/hi";
 import { HiMail } from "react-icons/hi";
 import { useDispatch } from 'react-redux';
 import { registerUser } from '../../../_actions/user_action';
+import { useNavigate } from 'react-router-dom'
 
 import Modal from 'react-modal';
 import {Route, Link} from 'react-router-dom';
@@ -19,6 +20,7 @@ import {Route, Link} from 'react-router-dom';
 function SignUp(){ 
 
 	const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [userid,setuserid] = useState("");
   const [password,setpassword] = useState("");
@@ -45,22 +47,30 @@ function SignUp(){
   const onUsermailHandler = (event) =>{
     setusermail(event.currentTarget.value)
   }
-	const onSubmit = () =>{
+	const onSubmit = (event) =>{
+    event.preventDefault();
 		if(password != passwordcheck){
 			return console.log('비밀번호 확인이 일치하지 않습니다.');
 		}
 
-		let body ={
+		let body = {
 			userid: userid,
 			password: password,
 			usermail: usermail,
 			username: username
 		};
 
+    console.log("userid: ", userid)
+    console.log("password: ", password)
+    console.log("usermail: ", usermail)
+    console.log("username: ", username)
+
 		// Action Dispatch 구문
-		dispatch(registerUser(body)).then((response) =>{
+		dispatch(registerUser(body))
+    .then(response =>{
 			if(response.payload.registerSuccess){
 				console.log('회원가입에 성공했습니다.');
+        navigate("/login")
 			}
 			else{
 				console.log('회원가입에 실패했습니다.');
@@ -122,7 +132,7 @@ function SignUp(){
         </div>
         <br/>
 				
-				<div><button type='submit' onClick={onSubmit} className="loginregister__button"> 회원가입 </button></div>
+				<div><button type='submit' onClick={onSubmit} className="button-box"> 회원가입 </button></div>
 				<br/><br/>
         
        	

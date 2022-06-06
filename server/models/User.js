@@ -8,10 +8,10 @@ const userSchema = mongoose.Schema( {    // 스키마 세팅
     type: String,  
     maxlength: 50
   },
-  email: {
+  usermail: {
     type: String,
     trim: true,               // 공백 제거
-    unique: 1                 // email 중복 안됨
+    unique: 1,
   },
   password: {
     type: String,
