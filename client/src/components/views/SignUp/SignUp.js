@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import './SignUp.css';
 import osLogo from '../../images/osLogo.png';
+import swal from "sweetalert"
 
 import { HiOutlineUser } from "react-icons/hi";
 import { HiOutlineKey } from "react-icons/hi";
@@ -10,9 +11,6 @@ import { HiMail } from "react-icons/hi";
 import { useDispatch } from 'react-redux';
 import { registerUser } from '../../../_actions/user_action';
 import { useNavigate } from 'react-router-dom'
-
-import Modal from 'react-modal';
-import {Route, Link} from 'react-router-dom';
 
 //TODO
 // 아이콘 정렬, 모달 창 두가지로 뜨게 하는 방법 찾기
@@ -27,10 +25,6 @@ function SignUp(){
   const [passwordcheck,setpasswordcheck] = useState("");
   const [username ,setusername] = useState("");
   const [usermail,setusermail] = useState("");
-  
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [pass, setPass] = useState(false);
-
 
   const onUseridHandler = (event) =>{
     setuserid(event.currentTarget.value)
@@ -70,10 +64,16 @@ function SignUp(){
     .then(response =>{
 			if(response.payload.registerSuccess){
 				console.log('회원가입에 성공했습니다.');
-        navigate("/login")
+        swal("회원가입 완료", "환영합니다! 로그인 해주세요.", "success")
+            .then(()=>{
+              window.location.replace('/login');
+            })
 			}
 			else{
 				console.log('회원가입에 실패했습니다.');
+        swal("로그인 실패",
+        `아이디나 이메일이 중복되었거나
+        비밀번호 확인이 일치하지 않습니다!`, "error")
 			}
 		})
 	}

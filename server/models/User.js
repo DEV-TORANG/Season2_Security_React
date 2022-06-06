@@ -6,7 +6,9 @@ const jwt = require('jsonwebtoken');
 const userSchema = mongoose.Schema( {    // 스키마 세팅
   userid:  {
     type: String,  
-    maxlength: 50
+    maxlength: 50,
+    trim: true,
+    unique: 1,
   },
   usermail: {
     type: String,
@@ -59,26 +61,32 @@ userSchema.pre('save', function(next) {
 // 비밀번호 확인
 userSchema.methods.comparePassword = function(plainPassword, cb) {
 // plainPassword 1234567 일 때 암호화된 비밀번호(해쉬값) 비교
+console.log("비밀번호 비교 중")
 bcrypt.compare(plainPassword, this.password, function(err, isMatch) {
-    if(err) return cb(err),
+    if(err) {
+      console.log("비밀번호가 틀립니다.")
+      return cb(err)
+    }
+    console.log("비밀번호가 맞습니다.")
     cb(null, isMatch)
 })
 }
 
 // 토큰 생성
 userSchema.methods.generateToken = function(cb) {
-    var user = this; // ES5문법
-    //jsonwebtoken이용해서 token생성
-    var token = jwt.sign(user._id.toHexString(), 'secretToken') 
-    //user._id + 'secretToken' = token
-    //_id는 데이터베이스에 저장된 id값
-    // -> 'secretToken' -> user_.id 확인가능
-    user.token = token
-    user.save(function(err, user) {
-      if(err) return cb(err)
-      cb(null, user)
-    })
-  }
+  console.log("토큰을 생성합니다.")
+  var user = this; // ES5문법
+  //jsonwebtoken이용해서 token생성
+  var token = jwt.sign(user._id.toHexString(), 'secretToken') 
+  //user._id + 'secretToken' = token
+  //_id는 데이터베이스에 저장된 id값
+  // -> 'secretToken' -> user_.id 확인가능
+  user.token = token
+  user.save(function(err, user) {
+    if(err) return cb(err)
+    cb(null, user)
+  })
+}
   
 // 인증
 userSchema.statics.findByToken = function(token, cb) { // jsonwebtoken usage
@@ -108,5 +116,5 @@ userSchema.statics.findByToken = function(token, cb) { // jsonwebtoken usage
   })    
 }
 
-const User = mongoose.model('testUser', userSchema)  // 모델
+const User = mongoose.model('User', userSchema)  // 모델
 module.exports = { User }                        // export

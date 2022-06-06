@@ -1,20 +1,17 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import './Login.css';
 import { AiFillLock,AiOutlineUser} from "react-icons/ai";
-import {Route, Link} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import swal from "sweetalert"
 
-import { HiOutlineUser } from "react-icons/hi";
-import { HiOutlineKey } from "react-icons/hi";
-import { HiLockClosed } from "react-icons/hi";
-import { HiOutlineStar } from "react-icons/hi";
-import { HiMail } from "react-icons/hi";
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../../../_actions/user_action';
-import { useNavigate } from 'react-router-dom'
 
 function Login(){
 {
+  
+	const dispatch = useDispatch();
+
   const [userid,setuserid] = useState("");
   const [password,setpassword] = useState("");
 
@@ -26,12 +23,13 @@ function Login(){
   }
 
   const onSubmit = (event) =>{
-    event.preventDefault();
 		// Action Dispatch 구문
     let body = {
       userid: userid,
       password: password
     }
+
+    console.log("클라이언트 전송확인");
 
 		dispatch(loginUser(body))
     .then(response =>{
@@ -44,6 +42,7 @@ function Login(){
 			}
 			else{
 				console.log('로그인에 실패했습니다.');
+        swal("로그인 실패", "아이디나 비밀번호를 확인해주세요", "error")
 			}
 		})
 	}
@@ -69,13 +68,12 @@ function Login(){
       </div>
       
       
-      <input type="submit" className="login" value="로그인" onClick = {onSubmit}></input>
+      <div><button type='submit' onClick = {onSubmit} className="login"> 로그인 </button></div>
       
       <div className="join1">
            <Link className="a" to = "/SignUp" >
              <a className='App-link'>+ 회원가입</a>
           </Link>
-        
       </div>
      </div>
   );
