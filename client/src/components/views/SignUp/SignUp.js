@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import './SignUp.css';
 import osLogo from '../../images/osLogo.png';
 import swal from "sweetalert"
+import Auth from '../../../hoc/auth'
 
 import { HiOutlineUser } from "react-icons/hi";
 import { HiOutlineKey } from "react-icons/hi";

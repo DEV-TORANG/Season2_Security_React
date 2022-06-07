@@ -76,14 +76,16 @@ app.post('/api/users/login',(req,res) => {
   })
 
 // 인증 라우팅
+// role 1 어드민
+// role 0 일반유저
 app.get('/api/users/auth', auth, (req, res) => {  // 미들웨어 (엔드포인트에 req받기 전에 중간에서 별도로 해주는 것)
   // 여기까지 왔다는 얘기는 Authentication이 true라는 말
   res.status(200).json({
     _id: req.user._id,
-    isAdmin: req.user.role === 0 ? false : true, // 0이면 일반유저
+    isAdmin: req.user.role === 0 ? false : true,
     isAuth: true,
-    email: req.user.email,
-    nameid: req.user.nameid,
+    userid: req.user.userid,
+    usermail: req.user.usermail,
     username: req.user.username,
     role: req.user.role
   })

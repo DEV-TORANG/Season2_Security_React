@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
+import Auth from '../../../hoc/auth'
 
 //landingpage들어오자마자 실행
 function LandingPage() {
