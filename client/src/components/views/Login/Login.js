@@ -71,7 +71,7 @@ function Login(){
       <div><button type='submit' onClick = {onSubmit} className="login"> 로그인 </button></div>
       
       <div className="join1">
-           <Link className="a" to = "/SignUp" >
+           <Link className="a" to = "/sign_up" >
              <a className='App-link'>+ 회원가입</a>
           </Link>
       </div>

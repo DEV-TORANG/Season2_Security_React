@@ -10,7 +10,7 @@ const userSchema = mongoose.Schema( {    // 스키마 세팅
     trim: true,
     unique: 1,
   },
-  usermail: {
+  email: {
     type: String,
     trim: true,               // 공백 제거
     unique: 1,
@@ -67,7 +67,7 @@ bcrypt.compare(plainPassword, this.password, function(err, isMatch) {
       console.log("비밀번호가 틀립니다.")
       return cb(err)
     }
-    console.log("비밀번호가 맞습니다.")
+    console.log("비밀번호 비교 중 에러가 존재하지 않습니다.")
     cb(null, isMatch)
 })
 }

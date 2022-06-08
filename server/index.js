@@ -44,10 +44,8 @@ app.post('/api/users/register', (req, res) => {
 app.post('/api/users/login',(req,res) => {
     // 요청된 이메일을 데이터베이스에 있는지 찾기
 
-    console.log(req.body.userid)
-    console.log(req.body.password)
-
-    User.findOne({email: req.body.userid}, (err, user) => {
+    User.findOne({userid: req.body.userid}, (err, user) => {
+      console.log("아이디 찾기 시작")
       if(!user) {
         return res.json({
           loginSuccess: false,
@@ -59,7 +57,8 @@ app.post('/api/users/login',(req,res) => {
       user.comparePassword(req.body.password, (err, isMatch) => {
         if(!isMatch)
           return res.json({loginSuccess: false, message: "비밀번호가 틀렸습니다."})
-        console.log("비밀번호가 일치합니다.")
+        else
+          console.log("비밀번호가 일치합니다.")
         // 토큰 생성하기
         user.generateToken((err, user) => {
           //jsonwebtoken 활용
@@ -67,7 +66,7 @@ app.post('/api/users/login',(req,res) => {
           // 토큰을 저장한다. 어디에? -> 여러곳 가능 [쿠키, 세션, 로컬스토리지]
           // 어디가 가장 안전한지는 사람마다 다름, 로컬, 쿠키 등등
           // 여기서는 쿠키 -> 라이브러리 다운로드 필요 (express에서 제공하는 cookie paraser)
-          res.cookie("x_auth", user.token)
+          res.cookie("Oberspace_Access", user.token)
           .status(200)
           .json({ loginSuccess: true, userId: user._id })
         })
@@ -85,7 +84,7 @@ app.get('/api/users/auth', auth, (req, res) => {  // 미들웨어 (엔드포인�
     isAdmin: req.user.role === 0 ? false : true,
     isAuth: true,
     userid: req.user.userid,
-    usermail: req.user.usermail,
+    email: req.user.email,
     username: req.user.username,
     role: req.user.role
   })
